@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 
@@ -75,6 +76,13 @@ public class LifecycleMonitorActivity extends Activity {
         Button cancelButton = (Button)findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(buttonClickListener);
         Log.d(Constants.TAG, "onCreate() method was invoked");
+        
+        if (savedInstanceState != null) {
+        	Log.d(Constants.TAG, "Bundle not null");
+        } else {
+        	Log.d(Constants.TAG, "Bundle is null");
+        }
+        
     }    
 
     @Override
@@ -130,6 +138,49 @@ public class LifecycleMonitorActivity extends Activity {
     public void onDestroy() {
     	super.onDestroy();
     	Log.d(Constants.TAG, "onDestroy invoked");
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    	super.onRestoreInstanceState(savedInstanceState);
+    	
+    	if (savedInstanceState != null) {
+    		Log.d(Constants.TAG, "Bundle not null");
+    		String chk = savedInstanceState.getString(Constants.REMEMBER_ME_CHECKBOX);
+    		
+    		if (chk.compareTo("true") == 0) {
+    			EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+    			EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+    			
+            	String savedText = savedInstanceState.getString(Constants.USERNAME_EDIT_TEXT);
+            	String savedPass = savedInstanceState.getString(Constants.PASSWORD_EDIT_TEXT);
+            	
+            	usernameEditText.setText(savedText);
+            	passwordEditText.setText(savedPass);
+            	Log.d(Constants.TAG, "Restored text/pass: " + savedText + "/" + savedPass);
+    		}
+        	
+        	
+        } else {
+        	Log.d(Constants.TAG, "Bundle is null");
+        }
+    }
+    
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+		super.onSaveInstanceState(savedInstanceState);
+
+		CheckBox chk = (CheckBox) findViewById(R.id.remember_me_checkbox);
+		
+		if (chk.isChecked()) {
+			EditText usernameEditText = (EditText)findViewById(R.id.username_edit_text);
+			savedInstanceState.putString(Constants.USERNAME_EDIT_TEXT, usernameEditText.getText().toString());
+			EditText passwordEditText = (EditText)findViewById(R.id.password_edit_text);
+			savedInstanceState.putString(Constants.PASSWORD_EDIT_TEXT, passwordEditText.getText().toString());
+			savedInstanceState.putString(Constants.REMEMBER_ME_CHECKBOX, "true");
+		} else {
+			savedInstanceState.putString(Constants.REMEMBER_ME_CHECKBOX, "false");
+		}
     }
     
 }
