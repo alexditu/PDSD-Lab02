@@ -95,4 +95,41 @@ public class LifecycleMonitorActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    @Override
+    protected void onStart() {
+    	super.onStart();
+    	Log.d(Constants.TAG, "onStart invoked");
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	Log.d(Constants.TAG, "onResume invoked");
+    }
+    
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	Log.d(Constants.TAG, "onPause invoked");
+    }
+    
+    @Override
+    public void onStop() {
+    	super.onStop();
+    	Log.d(Constants.TAG, "onStop invoked");
+    }
+    
+    @Override
+    protected void onRestart() {
+    	super.onRestart();
+    	Log.d(Constants.TAG, "onRestart invoked");
+    }
+    
+    @Override
+    public void onDestroy() {
+    	super.onDestroy();
+    	Log.d(Constants.TAG, "onDestroy invoked");
+    }
+    
 }
